@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StuddyBuddy AI</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f1f5f9;color:#111}header{background:#0f766e;color:white;padding:18px;text-align:center}header p{margin:5px 0 0;opacity:.9}nav{display:flex;background:white;position:sticky;top:0;z-index:10}nav button{flex:1;padding:13px;border:0;background:white;font-weight:bold;cursor:pointer}nav button.active{background:#0f766e;color:white}.wrap{max-width:700px;margin:auto;padding:14px}.card{background:white;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}input,select,textarea{width:100%;padding:11px;margin:7px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}button.main{background:#0f766e;color:white;border:0;padding:12px;border-radius:10px;width:100%;font-weight:bold;cursor:pointer}.answer{background:#ecfdf5;border:1px solid #a7f3d0;padding:12px;border-radius:10px;white-space:pre-wrap;margin-top:10px}.item{border:1px solid #eee;padding:10px;border-radius:10px;margin-top:8px}.small{color:#666;font-size:13px}.bar{height:14px;background:#e2e8f0;border-radius:20px;overflow:hidden}.fill{height:100%;background:#0f766e;width:0%}
+</style>
+</head>
+<body>
+<header><h1>📚 StuddyBuddy AI 🇿🇦</h1><p>Maths • Science • Physics - isiZulu + English - Works Offline</p></header>
+<nav>
+<button class="active" onclick="show('tutor',this)">Tutor</button>
+<button onclick="show('notes',this)">Notes</button>
+<button onclick="show('plan',this)">Plan</button>
+<button onclick="show('progress',this)">Progress</button>
+</nav>
+<div class="wrap">
+<div id="tutor" class="card">
+<h2>🤖 AI Tutor</h2>
+<p class="small">Try: 2x + 4 = 10 | photosynthesis | gravity | electricity</p>
+<select id="subject"><option>Maths</option><option>Science</option><option>Physics</option></select>
+<input id="q" placeholder="Type your question... e.g. 2x + 4 = 10">
+<button class="main" onclick="ask()">Explain Step-by-Step</button>
+<div id="ans" class="answer" style="display:none"></div>
+<p class="small">Quick try:</p>
+<button onclick="quick('2x + 4 = 10')">2x + 4 = 10</button>
+<button onclick="quick('photosynthesis')">Photosynthesis</button>
+<button onclick="quick('gravity')">Gravity</button>
+</div>
+<div id="notes" class="card" style="display:none">
+<h2>📝 My Notes</h2>
+<input id="nt" placeholder="Note title">
+<textarea id="nc" placeholder="Write your note..."></textarea>
+<button class="main" onclick="saveNote()">Save Note</button>
+<div id="noteList"></div>
+</div>
+<div id="plan" class="card" style="display:none">
+<h2>📅 Study Timetable</h2>
+<input id="pt" placeholder="What to study? e.g. Maths - Algebra">
+<input id="ptime" type="time">
+<button class="main" onclick="savePlan()">Add to Timetable</button>
+<div id="planList"></div>
+</div>
+<div id="progress" class="card" style="display:none">
+<h2>📊 Progress - Goal: 60 min / day</h2>
+<input id="mins" type="number" placeholder="Minutes studied today">
+<button class="main" onclick="addMin()">Add Minutes</button>
+<p><b id="totalMin">0</b> / 60 minutes</p>
+<div class="bar"><div id="fill" class="fill"></div></div>
+<p id="msg">Start today! Even 10 minutes counts.</p>
+</div>
+<div class="card"><p class="small">StuddyBuddy AI • Built for LaunchPad Hacks • No login, no data needed • MIT License</p></div>
+</div>
+<script>
+function show(id,btn){['tutor','notes','plan','progress'].forEach(x=>document.getElementById(x).style.display='none');document.getElementById(id).style.display='block';document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function quick(t){document.getElementById('q').value=t;ask()}
+function ask(){let q=document.getElementById('q').value.toLowerCase();let a=document.getElementById('ans');a.style.display='block';
+if(q.includes('2x')){a.textContent='QUESTION: 2x + 4 = 10\n\nStep 1: Susa i-4 nhlangothi zombili / Subtract 4 both sides:\n2x + 4 - 4 = 10 - 4\n2x = 6\n\nStep 2: Hlukanisa ngo-2 / Divide by 2:\nx = 6 / 2\n\nANSWER: x = 3 ✅\n\nCheck: 2(3)+4 = 6+4 = 10 ✅';}
+else if(q.includes('photo')){a.textContent='PHOTOSYNTHESIS\n\n1. Isitshalo sithatha ukukhanya kwelanga / Plant takes sunlight\n2. Sithatha amanzi + carbon dioxide\n3. Kwenza ukudla (glucose) + oxygen\n\nFormula: Water + CO2 + Sunlight -> Glucose + Oxygen\n\nIsiZulu: Isitshalo sipheka ukudla kwaso ngelanga.';}
+else if(q.includes('grav')){a.textContent='GRAVITY\n\n1. Gravity yinto edonsela izinto phansi / Gravity pulls things down\n2. Uma uphonsa ibhola, libuyela phansi\n3. Umhlaba una-gravity enkulu, yingakho sihlala phansi\n\nExample: Apple falls from tree because of gravity.';}
+else if(q.includes('electric')){a.textContent='ELECTRICITY\n\n1. Electricity ukuhamba kwama-electron / Flow of electrons\n2. Idinga i-circuit ephelele / Needs a complete circuit\n3. I-battery inika amandla / Battery gives energy\n\nSafety: Ungathinti izintambo ezivele - dangerous!';}
+else{a.textContent='ISINYATHELO / STEPS:\n\n1. Funda umbuzo kancane / Read question slowly\n2. Bhala okwaziyo / Write what you know\n3. Bhala i-formula\n4. Faka izinombolo / Substitute numbers\n5. Hlola impendulo yakho / Check answer\n\nTry one of: 2x + 4 = 10, photosynthesis, gravity, electricity';}}
+let notes=JSON.parse(localStorage.getItem('sb_notes')||'[]');
+function saveNote(){let t=document.getElementById('nt').value,n=document.getElementById('nc').value;if(!t||!n)return alert('Fill title + note');notes.push({t,n});localStorage.setItem('sb_notes',JSON.stringify(notes));renderNotes()}
+function renderNotes(){document.getElementById('noteList').innerHTML=notes.map((x,i)=>'<div class=item><b>'+x.t+'</b><p>'+x.n+'</p><button onclick="delNote('+i+')">Delete</button></div>').join('')}
+function delNote(i){notes.splice(i,1);localStorage.setItem('sb_notes',JSON.stringify(notes));renderNotes()}
+let plans=JSON.parse(localStorage.getItem('sb_plan')||'[]');
+function savePlan(){let t=document.getElementById('pt').value,tm=document.getElementById('ptime').value;if(!t)return alert('Type what to study');plans.push({t,tm});localStorage.setItem('sb_plan',JSON.stringify(plans));renderPlan()}
+function renderPlan(){document.getElementById('planList').innerHTML=plans.map(x=>'<div class=item><b>'+x.tm+'</b> - '+x.t+'</div>').join('')}
+let mins=parseInt(localStorage.getItem('sb_mins')||'0');
+function addMin(){let m=parseInt(document.getElementById('mins').value||'0');mins+=m;localStorage.setItem('sb_mins',mins);renderMin()}
+function renderMin(){document.getElementById('totalMin').textContent=mins;document.getElementById('fill').style.width=Math.min(100,mins/60*100)+'%';document.getElementById('msg').textContent=mins>=60?'🎉 Ushaye i-goal! You hit 60 min! Well done!':mins>=30?'👍 Halfway! Uphakathi - qhubeka!':'Start today! Even 10 minutes counts.'}
+renderNotes();renderPlan();renderMin();
+</script>
+</body>
+</html>
